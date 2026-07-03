@@ -13,172 +13,10 @@ import {
   Volume2,
   X,
 } from 'lucide-react'
+import { filters, words } from './wordBank'
 import './App.css'
 
-const STORAGE_KEY = 'workword-progress-v1'
-
-const words = [
-  {
-    id: 'implement',
-    word: 'implement',
-    phonetic: '/ˈɪmplɪment/',
-    part: 'v.',
-    cn: '实施，执行',
-    group: 'TOEIC',
-    level: '核心',
-    tags: ['项目', '管理'],
-    collocation: 'implement a policy',
-    sentence: 'The team will implement the new security policy next Monday.',
-    translation: '团队将在下周一实施新的安全政策。',
-    blank: 'The team will ____ the new security policy next Monday.',
-    options: ['implement', 'invoice', 'relocate', 'estimate'],
-    note: 'TOEIC 常出现在公司制度、项目计划、流程上线的语境。',
-  },
-  {
-    id: 'deploy',
-    word: 'deploy',
-    phonetic: '/dɪˈplɔɪ/',
-    part: 'v.',
-    cn: '部署，调配',
-    group: '科技',
-    level: '高频',
-    tags: ['软件', '运维'],
-    collocation: 'deploy an update',
-    sentence: 'The engineer deployed the update after the final test passed.',
-    translation: '最终测试通过后，工程师部署了更新。',
-    blank: 'The engineer ____ the update after the final test passed.',
-    options: ['deployed', 'reserved', 'attached', 'audited'],
-    note: '科技工作场景里常和 update、server、application 搭配。',
-  },
-  {
-    id: 'compliance',
-    word: 'compliance',
-    phonetic: '/kəmˈplaɪəns/',
-    part: 'n.',
-    cn: '合规，遵守',
-    group: '工作',
-    level: '核心',
-    tags: ['制度', '审计'],
-    collocation: 'ensure compliance',
-    sentence: 'The audit team checks whether each branch is in compliance with the rules.',
-    translation: '审计团队检查每个分支机构是否遵守规定。',
-    blank: 'The audit team checks whether each branch is in ____ with the rules.',
-    options: ['compliance', 'capacity', 'agenda', 'outage'],
-    note: '工作邮件和报告里常见 in compliance with。',
-  },
-  {
-    id: 'allocate',
-    word: 'allocate',
-    phonetic: '/ˈæləkeɪt/',
-    part: 'v.',
-    cn: '分配，拨出',
-    group: 'TOEIC',
-    level: '高频',
-    tags: ['预算', '资源'],
-    collocation: 'allocate resources',
-    sentence: 'The manager allocated extra resources to the urgent project.',
-    translation: '经理给紧急项目分配了额外资源。',
-    blank: 'The manager ____ extra resources to the urgent project.',
-    options: ['allocated', 'installed', 'negotiated', 'merged'],
-    note: '常与 budget、resources、time 搭配。',
-  },
-  {
-    id: 'scalable',
-    word: 'scalable',
-    phonetic: '/ˈskeɪləbl/',
-    part: 'adj.',
-    cn: '可扩展的',
-    group: '科技',
-    level: '进阶',
-    tags: ['产品', '架构'],
-    collocation: 'a scalable platform',
-    sentence: 'A scalable platform can support more users without a full redesign.',
-    translation: '可扩展平台无需整体重做也能支持更多用户。',
-    blank: 'A ____ platform can support more users without a full redesign.',
-    options: ['scalable', 'temporary', 'manual', 'overdue'],
-    note: '技术、SaaS、产品介绍里很常见。',
-  },
-  {
-    id: 'prioritize',
-    word: 'prioritize',
-    phonetic: '/praɪˈɔːrətaɪz/',
-    part: 'v.',
-    cn: '优先处理',
-    group: '工作',
-    level: '核心',
-    tags: ['任务', '沟通'],
-    collocation: 'prioritize requests',
-    sentence: 'Please prioritize customer requests that affect payment processing.',
-    translation: '请优先处理影响付款流程的客户请求。',
-    blank: 'Please ____ customer requests that affect payment processing.',
-    options: ['prioritize', 'decorate', 'postpone', 'subscribe'],
-    note: '适合用于会议、邮件、项目协作。',
-  },
-  {
-    id: 'outage',
-    word: 'outage',
-    phonetic: '/ˈaʊtɪdʒ/',
-    part: 'n.',
-    cn: '中断，停机',
-    group: '科技',
-    level: '进阶',
-    tags: ['运维', '服务'],
-    collocation: 'service outage',
-    sentence: 'The service outage lasted twenty minutes and affected online orders.',
-    translation: '服务中断持续了二十分钟，并影响了线上订单。',
-    blank: 'The service ____ lasted twenty minutes and affected online orders.',
-    options: ['outage', 'invoice', 'agenda', 'benefit'],
-    note: 'IT 服务、云平台、客服通知里高频。',
-  },
-  {
-    id: 'invoice',
-    word: 'invoice',
-    phonetic: '/ˈɪnvɔɪs/',
-    part: 'n.',
-    cn: '发票，账单',
-    group: 'TOEIC',
-    level: '核心',
-    tags: ['财务', '采购'],
-    collocation: 'issue an invoice',
-    sentence: 'The vendor will issue an invoice after the equipment is delivered.',
-    translation: '供应商会在设备交付后开具发票。',
-    blank: 'The vendor will issue an ____ after the equipment is delivered.',
-    options: ['invoice', 'outage', 'estimate', 'agenda'],
-    note: '商务英语、采购、付款流程里常见。',
-  },
-  {
-    id: 'onboarding',
-    word: 'onboarding',
-    phonetic: '/ˈɑːnbɔːrdɪŋ/',
-    part: 'n.',
-    cn: '入职培训，导入流程',
-    group: '工作',
-    level: '高频',
-    tags: ['HR', '流程'],
-    collocation: 'employee onboarding',
-    sentence: 'The onboarding process helps new employees understand internal tools.',
-    translation: '入职流程帮助新员工了解内部工具。',
-    blank: 'The ____ process helps new employees understand internal tools.',
-    options: ['onboarding', 'shipment', 'refund', 'capacity'],
-    note: 'HR、SaaS 客户导入都可用 onboarding。',
-  },
-  {
-    id: 'estimate',
-    word: 'estimate',
-    phonetic: '/ˈestɪmət/',
-    part: 'n./v.',
-    cn: '估算，预估',
-    group: 'TOEIC',
-    level: '核心',
-    tags: ['报价', '计划'],
-    collocation: 'provide an estimate',
-    sentence: 'Could you provide an estimate before we approve the budget?',
-    translation: '在我们批准预算前，你能提供一份估算吗？',
-    blank: 'Could you provide an ____ before we approve the budget?',
-    options: ['estimate', 'outage', 'agenda', 'prototype'],
-    note: '报价、工期、预算、交付时间都常用。',
-  },
-]
+const STORAGE_KEY = 'workword-progress-v2'
 
 const tabs = [
   { key: 'study', label: '学习', icon: BookOpen },
@@ -186,8 +24,6 @@ const tabs = [
   { key: 'library', label: '词库', icon: BriefcaseBusiness },
   { key: 'stats', label: '进度', icon: BarChart3 },
 ]
-
-const filters = ['全部', 'TOEIC', '工作', '科技']
 
 function createProgress() {
   return Object.fromEntries(
@@ -258,7 +94,7 @@ function App() {
 
   function submit(value = answer) {
     const normalized = value.trim().toLowerCase()
-    const correct = normalized === activeWord.options[0].toLowerCase()
+    const correct = normalized === activeWord.word.toLowerCase()
     setFeedback(correct ? 'correct' : 'wrong')
     setAnswer(value)
     setProgress((current) => {
@@ -301,7 +137,7 @@ function App() {
         <div className="app">
           <header className="top">
             <div>
-              <p>WorkWord</p>
+              <p>WorkWord · {words.length} 词</p>
               <h1>工作英语记忆</h1>
             </div>
             <button className="round-button" onClick={() => speak(activeWord.word)} aria-label="播放当前单词">
@@ -320,11 +156,7 @@ function App() {
 
           <div className="chips">
             {filters.map((item) => (
-              <button
-                className={filter === item ? 'chip active' : 'chip'}
-                key={item}
-                onClick={() => setFilter(item)}
-              >
+              <button className={filter === item ? 'chip active' : 'chip'} key={item} onClick={() => setFilter(item)}>
                 {item}
               </button>
             ))}
@@ -343,11 +175,8 @@ function App() {
                 speak={speak}
               />
             )}
-
             {tab === 'review' && <ReviewView progress={progress} pickWord={pickWord} />}
-
             {tab === 'library' && <LibraryView visibleWords={visibleWords} pickWord={pickWord} />}
-
             {tab === 'stats' && (
               <StatsView
                 accuracyRate={accuracyRate}
@@ -387,7 +216,7 @@ function StudyView({ activeWord, activeState, answer, feedback, setAnswer, submi
           <div>
             <h2>{activeWord.word}</h2>
             <p>
-              {activeWord.phonetic} · {activeWord.part} {activeWord.cn}
+              {activeWord.part} · {activeWord.cn}
             </p>
           </div>
           <button className="round-button light" onClick={() => speak(activeWord.word)} aria-label="播放单词">
@@ -419,7 +248,7 @@ function StudyView({ activeWord, activeState, answer, feedback, setAnswer, submi
         {feedback && (
           <div className={feedback === 'correct' ? 'feedback good' : 'feedback bad'}>
             {feedback === 'correct' ? <Check size={17} /> : <X size={17} />}
-            <span>{feedback === 'correct' ? '记住了，进入下一轮间隔复习。' : `答案是 ${activeWord.options[0]}，再看一遍例句。`}</span>
+            <span>{feedback === 'correct' ? '记住了，进入下一轮间隔复习。' : `答案是 ${activeWord.word}，再看一遍例句。`}</span>
           </div>
         )}
       </div>
@@ -472,7 +301,9 @@ function LibraryView({ visibleWords, pickWord }) {
           <button className="word-item" key={item.id} onClick={() => pickWord(item.id)}>
             <div>
               <strong>{item.word}</strong>
-              <span>{item.group} · {item.tags.join(' / ')}</span>
+              <span>
+                {item.group} · {item.tags.join(' / ')}
+              </span>
             </div>
             <small>{item.cn}</small>
           </button>
@@ -493,7 +324,7 @@ function StatsView({ accuracyRate, masteredCount, reviewCount, reset }) {
         <InfoTile label="掌握" value={`${masteredCount}/${words.length}`} />
         <InfoTile label="正确率" value={`${accuracyRate}%`} />
         <InfoTile label="待复习" value={`${reviewCount}`} />
-        <InfoTile label="词库" value="商务/科技" />
+        <InfoTile label="词库" value="TOEIC/工作/科技" />
       </div>
       <div className="insight-card">
         <BadgeCheck size={20} />
@@ -502,7 +333,9 @@ function StatsView({ accuracyRate, masteredCount, reviewCount, reset }) {
           <p>答错立即回到今日复习，连续两次正确标记为掌握，后续可替换成完整 SRS 间隔算法。</p>
         </div>
       </div>
-      <button className="danger-button" onClick={reset}>重置本机进度</button>
+      <button className="danger-button" onClick={reset}>
+        重置本机进度
+      </button>
     </section>
   )
 }
