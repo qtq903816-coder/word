@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="WorkWord icon">
+  <rect width="256" height="256" rx="58" fill="#0d7d6d"/>
+  <path d="M62 62h132a18 18 0 0 1 18 18v102a18 18 0 0 1-18 18H62a18 18 0 0 1-18-18V80a18 18 0 0 1 18-18Z" fill="#fbfcf8"/>
+  <path d="M76 94h64M76 126h104M76 158h78" stroke="#0d7d6d" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="183" cy="91" r="20" fill="#ee9d37"/>
+</svg>
