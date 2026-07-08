@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:phone": "vite --host 0.0.0.0 --port 5174",
+    "import:words": "node scripts/importPublicWordBank.mjs",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
